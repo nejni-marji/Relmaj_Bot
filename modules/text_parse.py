@@ -8,6 +8,7 @@ from telegram.ext import MessageHandler, Filters
 
 from stuff.data import myself
 from stuff.background import background
+from stuff.constants import fullwidth
 
 '''
 This stuff is basically Nenmaj's soul. It's old and crappy, but such is the
@@ -239,9 +240,37 @@ def text_parse(bot, update):
 				resp,
 			)
 
+	my_dudes = 'It(\'?s| is) ((.+ )*(((?!, my dude).)+)),? my dudes?[.!]*$'
+
+	def bot_my_dudes():
+		try:
+			text = re.search(
+				my_dudes,
+				update.message.text,
+				flags = re.I
+			).groups()[1]
+
+			resp = ''
+			for i in list(text.upper()):
+				if i == ' ':
+					resp += '    '
+				elif i not in fullwidth:
+					resp += i
+				else:
+					resp += chr(0xFEE0 + ord(i))
+
+			bot.send_message(update.message.chat_id,
+				resp,
+				reply_to_message_id = update.message.message_id
+			)
+
+		except:
+			pass
+
 	if True:
 		bot_responses()
 		bot_ayylmao()
+		bot_my_dudes()
 
 def main(dp, group):
 	for i in [
