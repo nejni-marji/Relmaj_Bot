@@ -8,6 +8,7 @@ from telegram.ext import InlineQueryHandler
 
 from stuff.data import myself
 from stuff.background import background
+from stuff.constants import fullwidth
 
 strike = re.compile('<s>(.(?!</s>))+.</s>')
 def strike_text(text):
@@ -79,6 +80,8 @@ def inlinequery(bot, update):
 		for i in list(query):
 			if i == ' ':
 				text += '    '
+			elif i not in fullwidth:
+				text += i
 			else:
 				text += chr(0xFEE0 + ord(i))
 		desc = text
