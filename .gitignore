@@ -3,3 +3,4 @@ python-telegram-bot
 telegram
 stuff/data.py
 *.vim
+.syncthing*
