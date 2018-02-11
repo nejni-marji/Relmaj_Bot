@@ -32,7 +32,7 @@ dp.add_error_handler(error)
 
 log_time('beginning to import bot modules')
 
-modules = [
+module_list = [
 	'creator',
 	'info',
 	'status',
@@ -44,7 +44,7 @@ modules = [
 	#'youtube',
 ]
 
-for i in enumerate(modules):
+for i in enumerate(module_list):
 	group = i[0] + 1
 	module = i[1]
 	exec('import modules.%s' % module)
@@ -56,15 +56,15 @@ def reload_meta(bot, update, args):
 		f.write(str(start))
 	if not args or not update.message.from_user.id == myself:
 		return None
-	if args[0] in modules:
+	if args[0] in module_list:
 		group = [
-			i[0] for i in enumerate(modules)
+			i[0] for i in enumerate(module_list)
 			if args[0] == i[1]
 		][0]
-		module = modules[group]
+		module = module_list[group]
 		reload_module(bot, update, group + 1, module)
 	elif args[0] == 'all':
-		for i in enumerate(modules):
+		for i in enumerate(module_list):
 			reload_module(bot, update, i[0] + 1, i[1])
 		reload_message = bot.send_message(
 			update.message.chat_id,
@@ -88,8 +88,8 @@ def reload_module(bot, update, group, module):
 		pass
 
 	try:
-		exec('importlib.reload(%s)' % module)
-		exec('%s.main(dp, %s)' % (module, group))
+		exec('importlib.reload(modules.%s)' % module)
+		exec('modules.%s.main(dp, %s)' % (module, group))
 
 		bot.edit_message_text(
 			chat_id = update.message.chat_id,
