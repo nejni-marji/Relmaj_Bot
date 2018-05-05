@@ -240,7 +240,7 @@ def text_parse(bot, update):
 				resp,
 			)
 
-	my_dudes = 'It(\'?s| is) ((.+ )*(((?!, my dude).)+)),? my dudes?[.!]*$'
+	my_dudes = '(It(\'?s| is) )?((.+ )*(((?!, my dude).)+)),? my dudes?[.!]*$'
 
 	def bot_my_dudes():
 		try:
@@ -248,7 +248,7 @@ def text_parse(bot, update):
 				my_dudes,
 				update.message.text,
 				flags = re.I
-			).groups()[1]
+			).groups()[2]
 
 			resp = ''
 			for i in list(text.upper()):
